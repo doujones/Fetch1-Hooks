@@ -1,24 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react'
 import './App.css';
 
+const boswell = {
+  name: null,
+  company: null
+}
+
 function App() {
+  const [profile, setProfile] = useState(boswell)
+
+  async function getProfile(){
+  const response = await fetch('https://api.github.com/users/doujones')
+ const json =  await response.json();
+
+  setProfile({
+    name: json.name,
+    company:json.company
+  })
+}
+
+  useEffect(() =>{
+    getProfile()
+  })
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h2>Fetch Data</h2>
+      <h2>{`name: ${profile.name}, company: ${profile.company} `}</h2>
     </div>
   );
 }
